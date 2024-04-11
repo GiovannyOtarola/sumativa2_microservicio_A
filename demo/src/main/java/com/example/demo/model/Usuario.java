@@ -6,17 +6,17 @@ import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "credenciales")
-public class Credenciales {
+public class Usuario {
 
     @NotNull(message = "usuario obligatorio")
     @NotBlank(message = "No puede ingresar un usuario vacio")
-    @Column(name= "usuario")
-    private String usuario;
+    @Column(name= "user")
+    private String user;
 
     @NotNull(message = "contraseña obligatoria")
     @NotBlank(message = "No puede ingresar una contraseña vacia")
-    @Column(name= "contraseña")
-    private String contraseña;
+    @Column(name= "password")
+    private String password;
 
     @NotNull(message = "ID obligatorio")
     @NotBlank(message = "No puede ingresar un ID vacio")
