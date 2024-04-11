@@ -14,7 +14,6 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-  
 
     @Override
     public List<Usuario> getAllUsuarios(){
@@ -47,7 +46,9 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public Usuario login(String nombre_usuario, String password){
-        return  usuarioRepository.findByUserAndPassword(nombre_usuario, password);
+    public Usuario loginUsuario(String nombre,String password){
+
+        return usuarioRepository.findByNombreAndPassword(nombre, password);
     }
+
 }

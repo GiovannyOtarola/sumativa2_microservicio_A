@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 
+import com.example.demo.service.PersonaService;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,8 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+   
 
     @GetMapping
     public List<Usuario> getAllPersonas(){
@@ -60,9 +64,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public Usuario login(@RequestBody Usuario usuario){
-            return usuarioService.login(usuario.getNombre_usuario(),usuario.getPassword());
+    public Usuario loginUsuario(@Validated @RequestBody Usuario usuario ) {
+
+        return usuarioService.loginUsuario(usuario.getNombre(), usuario.getPassword());
     }
+    
 
     @PutMapping("/{id}")
     public Usuario updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario){
