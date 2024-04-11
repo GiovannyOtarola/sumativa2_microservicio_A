@@ -61,7 +61,7 @@ public class UsuarioController {
 
     @PostMapping("/login")
     public Usuario login(@RequestBody Usuario usuario){
-        return usuarioService.login(usuario.getUser(),usuario.getPassword());
+            return usuarioService.login(usuario.getUser(),usuario.getPassword());
     }
 
     @PutMapping("/{id}")
