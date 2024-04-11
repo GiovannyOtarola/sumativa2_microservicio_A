@@ -70,11 +70,7 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 	
-   <dependency>
-     <groupId>io.github.paul-hernandez99</groupId>
-     <artifactId>dataStructures</artifactId>
-     <version>1.2.3</version>
-   </dependency>
+   
  </dependencies>
 
 	<build>
