@@ -20,8 +20,8 @@ public class Usuario {
 
     @NotNull(message = "user obligatorio")
     @NotBlank(message = "No puede ingresar un user vacio")
-    @Column(name= "usuario")
-    private String usuario;
+    @Column(name= "nombre_usuario")
+    private String nombre_usuario;
 
     @NotNull(message = "password obligatoria")
     @NotBlank(message = "No puede ingresar una password vacia")
