@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import org.hibernate.mapping.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,13 +62,16 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(createdUsuario);
     }
-
     @PostMapping("/login")
-    public Usuario loginUsuario(@Validated @RequestBody Usuario usuario ) {
-
-        return usuarioService.loginUsuario(usuario.getNombre(), usuario.getPassword());
+    public ResponseEntity<?> loginUsuario(@Validated @RequestBody Usuario usuario) {
+        Usuario usuarioLogueado = usuarioService.loginUsuario(usuario.getNombre(), usuario.getPassword());
+        if (usuarioLogueado != null) {
+            
+            return ResponseEntity.ok(usuarioLogueado);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrecta");
+        }
     }
-    
 
     @PutMapping("/{id}")
     public Usuario updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario){

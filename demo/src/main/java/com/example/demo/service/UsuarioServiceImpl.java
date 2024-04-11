@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +14,6 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService{
     @Autowired
     private UsuarioRepository usuarioRepository;
-
 
     @Override
     public List<Usuario> getAllUsuarios(){
@@ -49,6 +49,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario loginUsuario(String nombre,String password){
 
         return usuarioRepository.findByNombreAndPassword(nombre, password);
+        
     }
 
 }
