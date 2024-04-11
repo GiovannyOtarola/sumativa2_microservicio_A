@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,8 +20,8 @@ public class Usuario {
 
     @NotNull(message = "user obligatorio")
     @NotBlank(message = "No puede ingresar un user vacio")
-    @Column(name= "user")
-    private String user;
+    @Column(name= "usuario")
+    private String usuario;
 
     @NotNull(message = "password obligatoria")
     @NotBlank(message = "No puede ingresar una password vacia")
