@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     }
 
     @Override
-    public Usuario findByUserAndPassword(String user, String password){
+    public Usuario login(String user, String password){
         return  usuarioRepository.findByUserAndPassword(user, password);
     }
 }
