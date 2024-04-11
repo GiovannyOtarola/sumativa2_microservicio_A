@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.validation.constraints.*;
+
 
 @RestController
 @RequestMapping("/personas")
@@ -43,7 +43,7 @@ public class PersonaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getPersonaById(@PathVariable Long id){
-        Optional<Persona> persona = personaService.getPersonaById(id)
+        Optional<Persona> persona = personaService.getPersonaById(id);
         
         if (persona.isEmpty()) {
             log.error("No se enonctro para persona con ID {}",id);
