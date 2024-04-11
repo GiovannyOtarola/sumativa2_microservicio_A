@@ -11,8 +11,4 @@ public interface PersonaService {
     Persona createPersona(Persona persona);
     Persona updatePersona(Long id,Persona persona);
     void deletePersona(Long id);
-
-    
-
-    
 }
