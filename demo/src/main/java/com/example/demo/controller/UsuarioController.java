@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 
-import com.example.demo.service.PersonaService;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.hibernate.mapping.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +69,8 @@ public class UsuarioController {
             
             return ResponseEntity.ok(usuarioLogueado);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrecta");
+            log.error("Error de logeo");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Usuario o Contraseña incorrecta"));
         }
     }
 
