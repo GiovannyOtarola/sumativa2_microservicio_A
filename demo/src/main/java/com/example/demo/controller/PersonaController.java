@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,37 +38,51 @@ public class PersonaController {
     private PersonaService personaService;
 
     @GetMapping
-    public List<Persona> getAllPersonas(){
+    public CollectionModel<EntityModel<Persona>> getAllPersonas() {
+        List<Persona> personas = personaService.getAllPersonas();
         log.info("GET /personas");
-        log.info("Retonando todas las personas");
-        return personaService.getAllPersonas();
+        log.info("Retornando todas las personas");
+        List<EntityModel<Persona>> studentsResources = personas.stream()
+            .map( persona -> EntityModel.of(persona,
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPersonaById(persona.getId())).withSelfRel()
+            ))
+            .collect(Collectors.toList());
 
+        WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPersonas());
+        CollectionModel<EntityModel<Persona>> resources = CollectionModel.of(studentsResources, linkTo.withRel("personas"));
+
+        return resources;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getPersonaById(@PathVariable Long id){
+    public EntityModel<Persona> getPersonaById(@PathVariable Long id) {
         Optional<Persona> persona = personaService.getPersonaById(id);
-        
-        if (persona.isEmpty()) {
-            log.error("No se enonctro para persona con ID {}",id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("No se encontró la persona con ID"+id));
+
+        if (persona.isPresent()) {
+            return EntityModel.of(persona.get(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPersonaById(id)).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPersonas()).withRel("all-personas"));
+        } else {
+            throw new PersonaNotFoundException("Persona not found with id: " + id);
         }
-        return ResponseEntity.ok(persona);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createPersona(@Validated @RequestBody Persona persona){
+    public EntityModel<Persona> createPersona(@Validated @RequestBody Persona persona) {
         Persona createdPersona = personaService.createPersona(persona);
-        if (createdPersona == null) {
-            log.error("Error al crear la persona {}", persona);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Error al crear la persona"));
-        }
-        return ResponseEntity.ok(createdPersona);
+            return EntityModel.of(createdPersona,
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPersonaById(createdPersona.getId())).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPersonas()).withRel("all-personas"));
+
     }
 
     @PutMapping("/{id}")
-    public Persona updatePersona(@PathVariable Long id, @RequestBody Persona persona){
-        return personaService.updatePersona(id, persona);
+    public EntityModel<Persona> updatePersona(@PathVariable Long id, @RequestBody Persona persona) {
+        Persona updatedPersona = personaService.updatePersona(id, persona);
+        return EntityModel.of(updatedPersona,
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getPersonaById(id)).withSelfRel(),
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPersonas()).withRel("all-personas"));
+
     }
 
     @DeleteMapping("/{id}")
