@@ -79,7 +79,8 @@ public class UsuarioController {
     public EntityModel<Usuario> loginUsuario(@Validated @RequestBody Usuario usuario){
         Usuario loginUsuario = usuarioService.loginUsuario(usuario.getNombre(), usuario.getPassword());
         if(loginUsuario!= null){
-            return EntityModel.of(loginUsuario,            
+            return EntityModel.of(loginUsuario,
+                WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getUsuarioById(loginUsuario.getId())).withSelfRel(),            
                 WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsuarios()).withRel("all-usuarios"));
         }else{
             log.error("Credenciales Incorrectas");
