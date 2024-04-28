@@ -1,6 +1,6 @@
 version: '1'
 services:
-  microservicioA:
+  microservicioa:
     build:
       context: .
       dockerfile: Dockerfile
