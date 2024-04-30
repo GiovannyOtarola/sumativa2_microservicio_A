@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -71,6 +72,23 @@ public class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password", Matchers.is("123a")));
     }
 
+    @Test
+    public void updatedUsuarioTest() throws Exception{
 
+        Usuario usuario = new Usuario();
+        usuario.setNombre("usuario");
+        usuario.setPassword("123a");
+        usuario.setId(1L);
+
+        when(usuarioServiceMock.updateUsuario(1L, any(Usuario.class))).thenReturn(usuario);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/Usuarios/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"nombre\":\"usuario\",\"password\":\"123a\",\"id\":1}"))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.nombre", Matchers.is("usuario")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.password", Matchers.is("123a")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$._links.self.href", Matchers.is("http://localhost/Usuarios/1")));
+    }
    
 }
